@@ -20,6 +20,7 @@ def add_cpp_extension():
     extra_compile_args = [
         '-std=c++17' if not sys.platform.startswith('win') else '/std:c++17',
     ]
+    #  extra_compile_args = []
     extra_link_args = []
     define_macros = [
         ('_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS', None),  # mostly for the pytorch codebase
@@ -81,8 +82,8 @@ setuptools.setup(
         'numpy>=1.16',
         'pysparkling',  # for log analysis
         'python-json-logger',
-        'torch>=1.9.0',
-        'torchvision>=0.10.0',
+        #  'torch>=1.9.0',
+        #  'torchvision>=0.10.0',
         'pillow!=8.3.0',  # exclusion torchvision 0.10.0 compatibility
         'dataclasses; python_version<"3.7"',
     ],

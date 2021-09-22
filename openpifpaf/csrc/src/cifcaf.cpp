@@ -20,8 +20,8 @@ bool CifCaf::greedy = false;
 double CifCaf::keypoint_threshold = 0.15;
 double CifCaf::keypoint_threshold_rel = 0.5;
 bool CifCaf::reverse_match = true;
-bool CifCaf::force_complete = false;
-double CifCaf::force_complete_caf_th = 0.001;
+bool CifCaf::force_complete = true;
+double CifCaf::force_complete_caf_th = 0.000;
 
 
 bool FrontierCompare::operator() (const FrontierEntry& a, const FrontierEntry& b) {
