@@ -52,7 +52,6 @@ def apply(model, outfile, *, input_w=129, input_h=97):
     openpifpaf.network.heads.CompositeField3.inplace_ops = False
     openpifpaf.network.heads.CompositeField4.inplace_ops = False
 
-    import ipdb; ipdb.set_trace()
     dummy_input = torch.randn(1, 3, input_h, input_w).cuda()
     model.cuda()
     model.eval()
