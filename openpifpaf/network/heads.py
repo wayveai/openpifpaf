@@ -244,7 +244,7 @@ class CompositeField3(HeadNetwork):
             index_field = index_field_torch(
                 (feature_height, feature_width), device=x.device, unsqueeze=(1, 0))
             # TODO: coreml export does not work with the index_field creation in the graph.
-            index_field = torch.from_numpy(index_field.numpy())
+            index_field = torch.from_numpy(index_field.cpu().numpy())
             regs_x = [reg_x + index_field if do_offset else reg_x
                       for reg_x, do_offset in zip(regs_x, self.meta.vector_offsets)]
 
@@ -387,7 +387,7 @@ class CompositeField4(HeadNetwork):
             index_field = index_field_torch(
                 (feature_height, feature_width), device=x.device, unsqueeze=(1, 0))
             # TODO: coreml export does not work with the index_field creation in the graph.
-            index_field = torch.from_numpy(index_field.numpy())
+            #  index_field = torch.from_numpy(index_field.numpy())
             regs_x = [reg_x + index_field if do_offset else reg_x
                       for reg_x, do_offset in zip(regs_x, self.meta.vector_offsets)]
 

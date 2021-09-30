@@ -38,6 +38,8 @@ class EncoderDecoder(torch.nn.Module):
 
     def forward(self, x):
         cif_head_batch, caf_head_batch = self.traced_encoder(x)
+        cif_head_batch = cif_head_batch.cpu()
+        caf_head_batch = caf_head_batch.cpu()
         o = [self.decoder(cif_head, caf_head)
              for cif_head, caf_head in zip(cif_head_batch, caf_head_batch)]
         return o
@@ -50,7 +52,11 @@ def apply(model, outfile, *, input_w=129, input_h=97):
     openpifpaf.network.heads.CompositeField3.inplace_ops = False
     openpifpaf.network.heads.CompositeField4.inplace_ops = False
 
-    dummy_input = torch.randn(1, 3, input_h, input_w)
+    dummy_input = torch.randn(1, 3, input_h, input_w).cuda()
+    model.cuda()
+    model.eval()
+    with torch.no_grad():
+        z = model(dummy_input)
     with torch.no_grad():
         traced_encoder = torch.jit.trace(model, dummy_input)
     decoder = DecoderModule(model.head_metas[0], model.head_metas[1])
@@ -77,12 +83,14 @@ def main():
                         version='OpenPifPaf {version}'.format(version=openpifpaf.__version__))
 
     openpifpaf.network.Factory.cli(parser)
+    openpifpaf.decoder.cli(parser)
 
     parser.add_argument('--outfile', default='openpifpaf-shufflenetv2k16.torchscript.pt')
     parser.add_argument('--input-width', type=int, default=129)
     parser.add_argument('--input-height', type=int, default=97)
     args = parser.parse_args()
 
+    openpifpaf.decoder.configure(args)
     openpifpaf.network.Factory.configure(args)
 
     model, _ = openpifpaf.network.Factory().factory()

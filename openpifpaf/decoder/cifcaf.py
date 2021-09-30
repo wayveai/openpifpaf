@@ -130,9 +130,9 @@ class CifCaf(Decoder):
         CppCifCaf = torch.classes.openpifpaf_decoder.CifCaf  # pylint: disable=invalid-name
 
         group = parser.add_argument_group('CifCaf decoder')
-        assert not CppCifCaf.get_force_complete()
+        #  assert not CppCifCaf.get_force_complete()
         group.add_argument('--force-complete-pose',
-                           default=False, action='store_true')
+                           default=True, action='store_true')
         group.add_argument('--force-complete-caf-th', type=float,
                            default=CppCifCaf.get_force_complete_caf_th(),
                            help='CAF threshold for force complete. Set to -1 to deactivate.')
@@ -271,7 +271,7 @@ class CifCaf(Decoder):
                 ann.id_ = int(ann_id)
             annotations_py.append(ann)
 
-        LOG.info('annotations %d: %s',
-                 len(annotations_py),
-                 [np.sum(ann.data[:, 2] > 0.1) for ann in annotations_py])
+        LOG.debug('annotations %d: %s',
+                  len(annotations_py),
+                  [np.sum(ann.data[:, 2] > 0.1) for ann in annotations_py])
         return annotations_py
